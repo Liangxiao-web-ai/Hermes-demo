@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Send, Bot, User, Sparkles, TrendingUp, FileText, Activity, AlertTriangle, FileCode } from "lucide-react";
+import { Send, Bot, User, Sparkles, TrendingUp, FileText, Activity, AlertTriangle, FileCode, History, ChevronDown, Clock, Search } from "lucide-react";
 
 type Message = {
   id: string;
@@ -10,20 +10,25 @@ type Message = {
   data?: any;
 };
 
+let globalChatMessages: Message[] = [];
+let hasGlobalInit = false;
+
 export default function Chat() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const contextQuery = searchParams.get("context");
   const urlSkill = searchParams.get("skill");
+  const fromResult = searchParams.get("fromResult");
+  const action = searchParams.get("action");
 
   const [query, setQuery] = useState("");
   const [showSkills, setShowSkills] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [currentSkill, setCurrentSkill] = useState(urlSkill || "auto");
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const hasInit = useRef(false);
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(globalChatMessages);
 
   const skills = [
     { id: "auto", title: "智能分配规则", icon: <Sparkles className="w-5 h-5" />, color: "text-violet-600 bg-violet-100" },
@@ -34,23 +39,57 @@ export default function Chat() {
     { id: "custom_dividend", title: "高股息模型", icon: <FileCode className="w-5 h-5" />, color: "text-amber-600 bg-amber-100" },
   ];
 
-  useEffect(() => {
-    if (!hasInit.current) {
-      hasInit.current = true;
-      let initialMsg = "你好！我是 Hermes 投资助手。你可以直接向我提问，或者在左下角选择特定的分析引擎。";
+  const updateMessages = (updater: Message[] | ((prev: Message[]) => Message[])) => {
+    setMessages((prev) => {
+      const nextMsgs = typeof updater === 'function' ? updater(prev) : updater;
+      globalChatMessages = [...nextMsgs];
+      return nextMsgs;
+    });
+  };
 
-      if (contextQuery) {
+  useEffect(() => {
+    if (!hasGlobalInit) {
+      hasGlobalInit = true;
+      let initialMsg = "你好！我是 Hermes 投资助手。你可以直接向我提问，或者在上方选择特定的分析引擎。";
+
+      if (action === "track" && contextQuery) {
+        initialMsg = `已为您成功创建针对「${contextQuery}」的专属跟踪任务。系统将在每天收盘后和财报披露时为您推送简报，您可以在首页“主动追踪任务”中查看状态。`;
+      } else if (contextQuery && !fromResult) {
         initialMsg = `关于「${contextQuery}」的初步分析已完成。如果有任何细节需要深挖，或者想针对某些财务指标继续追问，请随时告诉我。`;
       } else if (urlSkill && urlSkill !== "auto") {
         const sName = skills.find(s => s.id === urlSkill)?.title;
         if (sName) initialMsg = `已为您切换至【${sName}】。请输入您想了解的股票代码、名称或具体问题。`;
       }
 
-      setMessages([
+      globalChatMessages = [
         { id: Date.now().toString(), role: "assistant", type: "text", text: initialMsg }
-      ]);
+      ];
+      setMessages([...globalChatMessages]);
+    } else {
+      if (fromResult === "true") {
+        const lastMsg = globalChatMessages[globalChatMessages.length - 1];
+        if (lastMsg && lastMsg.role === "assistant" && !lastMsg.text?.includes("继续追问")) {
+           globalChatMessages.push({ 
+             id: Date.now().toString(), 
+             role: "assistant", 
+             type: "text", 
+             text: `好的，如需针对刚刚看过的分析结果继续追问，请随时告诉我。` 
+           });
+        }
+      } else if (action === "track" && contextQuery) {
+        const lastMsg = globalChatMessages[globalChatMessages.length - 1];
+        if (lastMsg && lastMsg.role === "assistant" && !lastMsg.text?.includes("专属跟踪任务")) {
+           globalChatMessages.push({ 
+             id: Date.now().toString(), 
+             role: "assistant", 
+             type: "text", 
+             text: `已为您成功创建针对「${contextQuery}」的专属跟踪任务。系统将在每天收盘后和财报披露时为您推送简报，您可以在首页“主动追踪任务”中查看状态。` 
+           });
+        }
+      }
+      setMessages([...globalChatMessages]);
     }
-  }, [contextQuery, urlSkill]);
+  }, [contextQuery, urlSkill, fromResult]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -65,7 +104,7 @@ export default function Chat() {
     if (!query.trim()) return;
 
     const userMsg: Message = { id: Date.now().toString(), role: "user", type: "text", text: query };
-    setMessages(prev => [...prev, userMsg]);
+    updateMessages(prev => [...prev, userMsg]);
     setQuery("");
     setIsTyping(true);
     setShowSkills(false);
@@ -75,7 +114,7 @@ export default function Chat() {
 
     setTimeout(() => {
       const sName = skills.find(s => s.id === currentSkill)?.title || "智能路由";
-      setMessages(prev => [...prev, {
+      updateMessages(prev => [...prev, {
         id: Date.now().toString(),
         role: "assistant",
         type: "text",
@@ -84,7 +123,7 @@ export default function Chat() {
 
       setTimeout(() => {
         setIsTyping(false);
-        setMessages(prev => [...prev, {
+        updateMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           role: "assistant",
           type: "card",
@@ -110,10 +149,70 @@ export default function Chat() {
           </div>
           <span>Hermes 投资助手</span>
         </div>
-        <div className="text-xs bg-slate-200/50 text-slate-500 font-medium px-2 py-1 rounded-md mt-1">
-          Online
+        <div className="flex items-center gap-3 mt-1">
+          <button 
+            className={`transition-colors p-1 rounded-lg ${showHistory ? 'bg-slate-200 text-slate-800' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}
+            onClick={() => setShowHistory(!showHistory)}
+          >
+            <History className="w-5 h-5" />
+          </button>
+          <div className="text-xs bg-slate-200/50 text-slate-500 font-medium px-2 py-1 rounded-md">
+            Online
+          </div>
         </div>
       </div>
+
+      {/* History Drawer Overlay */}
+      {showHistory && (
+        <div className="absolute inset-0 z-30 bg-slate-900/20 backdrop-blur-sm" onClick={() => setShowHistory(false)}>
+          <div 
+            className="absolute top-0 right-0 w-3/4 max-w-[300px] h-full bg-white shadow-2xl flex flex-col transform transition-transform animate-in slide-in-from-right"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <span className="font-semibold text-slate-800">历史记录</span>
+            </div>
+            <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1">
+              <div className="px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">最近一周</div>
+              
+              <button className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-[14px] font-medium text-slate-800 truncate pr-2">腾讯控股 Q3 财报分析</span>
+                  <span className="text-[10px] text-slate-400 shrink-0 mt-0.5">昨天</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>财报助手</span>
+                </div>
+              </button>
+
+              <button className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-[14px] font-medium text-slate-800 truncate pr-2">宁德时代 估值分析</span>
+                  <span className="text-[10px] text-slate-400 shrink-0 mt-0.5">周二</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>基本面分析</span>
+                </div>
+              </button>
+
+              <div className="px-3 py-2 mt-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">更早</div>
+              
+              <button className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-[14px] font-medium text-slate-800 truncate pr-2">高股息银行股筛选</span>
+                  <span className="text-[10px] text-slate-400 shrink-0 mt-0.5">10-15</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <FileCode className="w-3.5 h-3.5" />
+                  <span>高股息模型</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6">
@@ -225,46 +324,51 @@ export default function Chat() {
           </div>
         )}
 
-        <div className="bg-white border border-slate-200/80 focus-within:border-slate-800 focus-within:shadow-sm focus-within:shadow-slate-200/50 rounded-[20px] p-2 flex items-end gap-2 transition-all">
-          <button
-            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors mb-0.5 ${
-              showSkills ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 active:bg-slate-300'
-            }`}
-            onClick={() => setShowSkills(!showSkills)}
-            title="选择分析引擎"
-          >
-            {skills.find(s => s.id === currentSkill)?.icon || <Sparkles className="w-5 h-5" />}
-          </button>
+        <div className="bg-white border border-slate-200/80 focus-within:border-slate-800 focus-within:shadow-sm focus-within:shadow-slate-200/50 rounded-[20px] p-2 flex flex-col gap-2 transition-all">
+          <div className="flex px-1 pt-1">
+             <button 
+                onClick={() => setShowSkills(!showSkills)}
+                className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 shadow-sm text-slate-700 px-3 py-1.5 rounded-full text-[13px] font-medium hover:bg-slate-100 active:bg-slate-200 transition-colors"
+             >
+                <div className="text-amber-500">
+                    {currentSkillObj.icon}
+                </div>
+                {currentSkillObj.title}
+                <ChevronDown className="w-3 h-3 ml-0.5 opacity-50" />
+             </button>
+          </div>
           
-          <textarea
-            id="chat-textarea"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              handleInputResize(e);
-            }}
-            className="flex-1 bg-transparent max-h-32 py-2 text-[15px] outline-none resize-none text-slate-800 placeholder:text-slate-400 leading-relaxed"
-            placeholder={currentSkill === 'auto' ? "输入股票代码或具体问题..." : `使用 ${currentSkillObj.title} 分析...`}
-            rows={1}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-          />
-          
-          <button
-            onClick={handleSend}
-            disabled={!query.trim()}
-            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all mb-0.5 ${
-              query.trim() 
-                ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 hover:bg-slate-800 active:bg-slate-700 transform scale-100' 
-                : 'bg-slate-100 text-slate-400 transform scale-95'
-            }`}
-          >
-            <Send className="w-4 h-4 ml-0.5" />
-          </button>
+          <div className="flex items-end gap-2 pl-2">
+            <textarea
+              id="chat-textarea"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                handleInputResize(e);
+              }}
+              className="flex-1 bg-transparent max-h-32 py-1.5 text-[15px] outline-none resize-none text-slate-800 placeholder:text-slate-400 leading-relaxed"
+              placeholder={currentSkill === 'auto' ? "输入股票代码或具体问题..." : "输入任何你想分析的内容..."}
+              rows={1}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+            />
+            
+            <button
+              onClick={handleSend}
+              disabled={!query.trim()}
+              className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all mb-0.5 ${
+                query.trim() 
+                  ? 'bg-slate-900 text-white shadow-md shadow-slate-900/30 hover:bg-slate-800 active:bg-slate-700 transform scale-100' 
+                  : 'bg-slate-100 text-slate-400 transform scale-95'
+              }`}
+            >
+              <Send className="w-4 h-4 ml-0.5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

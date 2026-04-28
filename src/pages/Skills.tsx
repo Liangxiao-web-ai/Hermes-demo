@@ -62,7 +62,7 @@ export default function Skills() {
               <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
                 <Plus className="w-5 h-5" />
               </div>
-              <span className="text-sm font-medium text-slate-700">创建新引擎</span>
+              <span className="text-sm font-medium text-slate-700">创建新 Skill</span>
             </div>
             
             <div 

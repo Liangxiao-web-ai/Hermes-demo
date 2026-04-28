@@ -26,7 +26,7 @@ export default function CreateSkill() {
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <span className="font-medium text-slate-800 ml-1">创建新引擎</span>
+          <span className="font-medium text-slate-800 ml-1">创建新 Skill</span>
         </div>
         <button 
           onClick={handleSave}
@@ -50,7 +50,7 @@ export default function CreateSkill() {
           
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-slate-500 font-medium mb-1.5 block">引擎名称 <span className="text-rose-500">*</span></label>
+              <label className="text-xs text-slate-500 font-medium mb-1.5 block">Skill 名称 <span className="text-rose-500">*</span></label>
               <input 
                 type="text" 
                 value={name}
@@ -80,7 +80,7 @@ export default function CreateSkill() {
             <textarea 
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
-              placeholder="在这里输入该引擎的核心分析逻辑和关注指标，例如：
+              placeholder="在这里输入该 Skill 的核心分析逻辑和关注指标，例如：
 1. 优先提取该股票近3年的分红派息记录；
 2. 结合最新一期财报的自由现金流进行保障率评估；
 3. 输出结果时请按照【核心结论】、【股息历史】、【现金流健康度】三段格式展示。" 
@@ -89,16 +89,38 @@ export default function CreateSkill() {
           </div>
         </div>
 
-        {/* 数据源挂载 (Mock) */}
+        {/* 数据源与API挂载 (Mock) */}
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-slate-700">挂载私有数据源</h3>
-            <button className="text-slate-700 text-xs font-medium bg-slate-100 px-2 py-1 rounded flex items-center gap-1 active:bg-slate-200 hover:bg-slate-200 transition-colors">
-              <Plus className="w-3 h-3" />添加
-            </button>
+            <h3 className="text-sm font-semibold text-slate-700">私有数据与 API 集成</h3>
+            <div className="flex gap-2">
+              <button className="text-slate-700 text-xs font-medium bg-slate-100 px-2 py-1 rounded flex items-center gap-1 active:bg-slate-200 hover:bg-slate-200 transition-colors">
+                <Plus className="w-3 h-3" /> API
+              </button>
+              <button className="text-slate-700 text-xs font-medium bg-slate-100 px-2 py-1 rounded flex items-center gap-1 active:bg-slate-200 hover:bg-slate-200 transition-colors">
+                <Plus className="w-3 h-3" /> 数据
+              </button>
+            </div>
           </div>
           
           <div className="flex flex-col gap-2">
+            {/* API Mock */}
+             <div className="flex items-center justify-between bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-blue-100 text-blue-600 flex items-center justify-center rounded">
+                  <span className="text-[10px] font-bold">API</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-medium text-slate-600 inline-flex items-center gap-1">最新行情查询 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span></span>
+                  <span className="text-[10px] text-slate-400">Rest API (GET)</span>
+                </div>
+              </div>
+              <button className="text-slate-400 p-1 hover:bg-slate-200 rounded">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* CSV Mock */}
             <div className="flex items-center justify-between bg-slate-50 p-2.5 rounded-lg border border-slate-100">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 bg-emerald-100 text-emerald-600 flex items-center justify-center rounded">

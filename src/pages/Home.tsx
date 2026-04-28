@@ -69,16 +69,37 @@ export default function Home() {
           <h2 className="text-lg font-medium text-slate-800">主动追踪任务</h2>
         </div>
         
-        <div className="bg-white border border-slate-100 rounded-xl p-4 shadow-sm flex items-start gap-4">
-          <div className="p-2 ml-1 mt-1 bg-amber-50 text-amber-600 rounded-lg">
-            <Bell className="w-5 h-5" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-slate-800">财报更新提醒</h3>
-              <span className="text-xs text-slate-400">进行中</span>
+        <div className="flex flex-col gap-3">
+          <div 
+            className="bg-white border text-left border-slate-100 rounded-xl p-4 shadow-sm flex items-start gap-4 cursor-pointer active:bg-slate-50 transition-colors"
+            onClick={() => navigate(`/chat?skill=fundamental&action=track&context=腾讯控股`)}
+          >
+            <div className="p-2 ml-1 mt-1 bg-amber-50 text-amber-600 rounded-lg shrink-0">
+              <Bell className="w-5 h-5" />
             </div>
-            <p className="text-sm text-slate-500 mt-1 line-clamp-2">如果腾讯控股发布最新季度财报，立即生成关键指标对比简报。</p>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-slate-800">腾讯控股 - 财报更新提醒</h3>
+                <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">监控中</span>
+              </div>
+              <p className="text-sm text-slate-500 mt-1 line-clamp-2">如果腾讯控股发布最新季度财报，立即生成关键指标对比简报。</p>
+            </div>
+          </div>
+
+          <div 
+            className="bg-white border text-left border-slate-100 rounded-xl p-4 shadow-sm flex items-start gap-4 cursor-pointer active:bg-slate-50 transition-colors"
+            onClick={() => navigate(`/chat?skill=technical&action=track&context=宁德时代`)}
+          >
+            <div className="p-2 ml-1 mt-1 bg-emerald-50 text-emerald-600 rounded-lg shrink-0">
+              <Bell className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-slate-800">宁德时代 - 异动跟踪</h3>
+                <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">监控中</span>
+              </div>
+              <p className="text-sm text-slate-500 mt-1 line-clamp-2">股价盘中跌幅或涨幅超过5%时，立刻提示可能的支撑位及消息面动态。</p>
+            </div>
           </div>
         </div>
       </div>

@@ -100,14 +100,14 @@ export default function Result() {
       <div className="fixed bottom-0 w-full max-w-md bg-white border-t border-slate-100 p-4 pb-safe flex items-center gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.05)] z-20">
         <button 
           className="flex-1 bg-white border-2 border-slate-200 text-slate-700 font-medium px-4 py-3 min-h-[48px] rounded-xl flex items-center justify-center gap-2 active:bg-slate-50"
-          onClick={() => navigate(`/chat?skill=${skill}`)}
+          onClick={() => navigate(`/chat?skill=${skill}&action=track&context=${encodeURIComponent(query)}`)}
         >
           <BellPlus className="w-5 h-5 text-amber-500" />
           <span>创建跟踪任务</span>
         </button>
         <button 
           className="flex-1 bg-slate-900 text-white font-medium px-4 py-3 min-h-[48px] rounded-xl flex items-center justify-center gap-2 active:bg-slate-800 transition-colors"
-          onClick={() => navigate(`/chat?skill=${skill}&context=${encodeURIComponent(query)}`)}
+          onClick={() => navigate(`/chat?skill=${skill}&fromResult=true&context=${encodeURIComponent(query)}`)}
         >
           <MessageCircle className="w-5 h-5" />
           <span>继续追问</span>
