@@ -56,11 +56,11 @@ export default function Input() {
         )}
 
         {/* Selected Skill Chip */}
-        <div className="inline-flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium mb-6 self-start">
-          <Sparkles className="w-4 h-4 mr-1.5" />
+        <div className="inline-flex items-center bg-slate-100 text-slate-800 px-3 py-1.5 rounded-full text-sm font-medium mb-6 self-start border border-slate-200">
+          <Sparkles className="w-4 h-4 mr-1.5 text-amber-500" />
           当前 Skill：{skillNames[skill] || "智能分析"}
           <button 
-            className="ml-2 bg-blue-100 rounded-full p-0.5 hover:bg-blue-200"
+            className="ml-2 bg-slate-200 rounded-full p-0.5 hover:bg-slate-300"
             onClick={() => navigate("/skills")}
           >
             <X className="w-3 h-3" />
@@ -72,14 +72,14 @@ export default function Input() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={context ? "输入你想继续了解的问题..." : "输入股票名称、代码或你的问题..."}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 pr-12 min-h-[160px] resize-none outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow text-slate-800 block"
+            className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 pr-12 min-h-[160px] resize-none outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition-shadow text-slate-800 block"
             autoFocus
           ></textarea>
           
           <button 
             className={`absolute right-3 bottom-3 p-3 rounded-xl transition-colors ${
               query.trim() 
-                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20 active:bg-blue-700" 
+                ? "bg-slate-900 text-white shadow-md shadow-slate-900/20 active:bg-slate-800" 
                 : "bg-slate-200 text-slate-400"
             }`}
             onClick={handleSend}

@@ -59,15 +59,15 @@ export default function Analyzing() {
         <div className="relative w-24 h-24 mb-8">
           {/* 外圈动画 */}
           <motion.div 
-            className="absolute inset-0 rounded-full border-4 border-blue-100"
+            className="absolute inset-0 rounded-full border-4 border-slate-200"
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
           >
-            <div className="absolute top-0 left-1/2 -ml-2 -mt-2 w-4 h-4 bg-blue-500 rounded-full"></div>
+            <div className="absolute top-0 left-1/2 -ml-2 -mt-2 w-4 h-4 bg-amber-500 rounded-full"></div>
           </motion.div>
           {/* 内层 Icon */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+            <Loader2 className="w-10 h-10 text-slate-800 animate-spin" />
           </div>
         </div>
 
@@ -88,13 +88,13 @@ export default function Analyzing() {
                 {isDone ? (
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                 ) : isActive ? (
-                  <div className="w-5 h-5 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
+                  <div className="w-5 h-5 rounded-full border-2 border-slate-800 border-t-transparent animate-spin"></div>
                 ) : (
                   <div className="w-5 h-5 rounded-full border-2 border-slate-200"></div>
                 )}
                 <span className={`text-sm ${
                   isDone ? 'text-slate-500' : 
-                  isActive ? 'text-blue-700 font-medium' : 'text-slate-400'
+                  isActive ? 'text-slate-800 font-medium' : 'text-slate-400'
                 }`}>
                   {text}
                 </span>
@@ -107,7 +107,7 @@ export default function Analyzing() {
         <div className="w-full max-w-[280px] mt-12">
           <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-blue-500 rounded-full transition-all duration-100 ease-out"
+              className="h-full bg-amber-500 rounded-full transition-all duration-100 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>

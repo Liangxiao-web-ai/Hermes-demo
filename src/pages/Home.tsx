@@ -19,18 +19,19 @@ export default function Home() {
       </header>
 
       {/* Banner 入口 */}
-      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 mb-8 text-white shadow-md relative overflow-hidden">
-        <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 mb-8 text-white shadow-xl relative overflow-hidden border border-slate-800 border-t-slate-700">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl"></div>
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-5 h-5 text-blue-200" />
-            <h2 className="text-lg font-semibold text-white">Hermes AI 投资助手</h2>
+            <Sparkles className="w-5 h-5 text-amber-400" />
+            <h2 className="text-lg font-semibold text-white tracking-wide">Hermes AI 投资助手</h2>
           </div>
-          <p className="text-blue-100 text-sm leading-relaxed mb-5">
+          <p className="text-slate-300 text-sm leading-relaxed mb-5 font-light">
             基于大语言模型的智能分析工具。选择下方分析引擎，快速了解财务健康、估值风险与技术形态。
           </p>
           <button 
-            className="w-full bg-white text-blue-600 font-medium px-4 py-3 rounded-xl shadow-sm active:bg-blue-50 transition-colors"
+            className="w-full bg-slate-800/80 backdrop-blur border border-slate-600/50 text-amber-400 font-medium px-4 py-3 rounded-xl shadow-sm hover:bg-slate-700 active:bg-slate-700 transition-colors"
             onClick={() => navigate("/skills")}
           >
             开始全新分析
@@ -42,7 +43,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-medium text-slate-800">常用分析 (Skills)</h2>
           <button 
-            className="text-sm text-blue-600 font-medium"
+            className="text-sm text-slate-500 hover:text-slate-800 font-medium"
             onClick={() => navigate("/skills")}
           >
             查看全部
@@ -53,7 +54,7 @@ export default function Home() {
           {skills.map((skill) => (
             <div 
               key={skill.id}
-              onClick={() => navigate(`/input?skill=${skill.id}`)}
+              onClick={() => navigate(`/chat?skill=${skill.id}`)}
               className="bg-white border text-center border-slate-100 rounded-2xl p-5 flex flex-col items-center justify-center gap-3 cursor-pointer active:bg-slate-50 transition-colors shadow-sm"
             >
               <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-1">

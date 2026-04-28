@@ -5,6 +5,7 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import Chat from "./pages/Chat";
 import Skills from "./pages/Skills";
 import Input from "./pages/Input";
 import Analyzing from "./pages/Analyzing";
@@ -18,6 +19,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/input" element={<Input />} />
           <Route path="/analyzing" element={<Analyzing />} />

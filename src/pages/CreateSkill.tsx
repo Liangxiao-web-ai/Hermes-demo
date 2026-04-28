@@ -33,7 +33,7 @@ export default function CreateSkill() {
           disabled={!name.trim()}
           className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             name.trim() 
-              ? "bg-blue-600 text-white active:bg-blue-700" 
+              ? "bg-slate-900 text-white hover:bg-slate-800 active:bg-slate-700" 
               : "bg-slate-100 text-slate-400"
           }`}
         >
@@ -56,7 +56,7 @@ export default function CreateSkill() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="例如：高股息精选模型" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition-shadow"
               />
             </div>
             
@@ -67,7 +67,7 @@ export default function CreateSkill() {
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 placeholder="例如：重点关注连续3年股息率超过5%的标的" 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition-shadow"
               />
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function CreateSkill() {
 1. 优先提取该股票近3年的分红派息记录；
 2. 结合最新一期财报的自由现金流进行保障率评估；
 3. 输出结果时请按照【核心结论】、【股息历史】、【现金流健康度】三段格式展示。" 
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 min-h-[200px] text-sm text-slate-800 resize-none outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow leading-relaxed"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 min-h-[200px] text-sm text-slate-800 resize-none outline-none focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition-shadow leading-relaxed"
             ></textarea>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function CreateSkill() {
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold text-slate-700">挂载私有数据源</h3>
-            <button className="text-blue-600 text-xs font-medium bg-blue-50 px-2 py-1 rounded flex items-center gap-1 active:bg-blue-100">
+            <button className="text-slate-700 text-xs font-medium bg-slate-100 px-2 py-1 rounded flex items-center gap-1 active:bg-slate-200 hover:bg-slate-200 transition-colors">
               <Plus className="w-3 h-3" />添加
             </button>
           </div>

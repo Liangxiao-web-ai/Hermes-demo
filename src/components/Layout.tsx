@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLocation } from 'react-router-dom';
+import BottomNav from './BottomNav';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const showBottomNav = location.pathname === '/' || location.pathname === '/chat';
 
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center font-sans antialiased text-slate-800">
@@ -15,11 +17,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.2 }}
-            className="flex-1 flex flex-col h-full relative"
+            className={`flex-1 flex flex-col h-full relative ${showBottomNav ? 'pb-[72px]' : ''}`}
           >
             {children}
           </motion.div>
         </AnimatePresence>
+        {showBottomNav && <BottomNav />}
       </div>
     </div>
   );

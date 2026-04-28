@@ -33,14 +33,14 @@ export default function Result() {
         </div>
 
         {/* AI 结论 */}
-        <div className="bg-white rounded-2xl border border-blue-100 overflow-hidden shadow-sm">
-          <div className="bg-blue-50/50 px-4 py-3 flex items-center gap-2 border-b border-blue-50">
-            <Sparkles className="w-4 h-4 text-blue-600" />
-            <h2 className="font-medium text-blue-800 text-sm">AI 核心结论</h2>
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="bg-slate-50 px-4 py-3 flex items-center gap-2 border-b border-slate-100">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <h2 className="font-medium text-slate-800 text-sm">AI 核心结论</h2>
           </div>
           <div className="p-4">
             <p className="text-slate-800 text-[15px] leading-relaxed">
-              当前更适合<span className="font-semibold text-blue-700 bg-blue-50 px-1 rounded mx-1">继续观察</span>，短期不直接给出买卖建议。公司营收稳定增长，但受行业波动影响，短期利润率承压。技术面上涨动能不足，建议等待更明确的筑底信号。
+              当前更适合<span className="font-semibold text-amber-700 bg-amber-50 px-1 rounded mx-1">继续观察</span>，短期不直接给出买卖建议。公司营收稳定增长，但受行业波动影响，短期利润率承压。技术面上涨动能不足，建议等待更明确的筑底信号。
             </p>
           </div>
         </div>
@@ -100,14 +100,14 @@ export default function Result() {
       <div className="fixed bottom-0 w-full max-w-md bg-white border-t border-slate-100 p-4 pb-safe flex items-center gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.05)] z-20">
         <button 
           className="flex-1 bg-white border-2 border-slate-200 text-slate-700 font-medium px-4 py-3 min-h-[48px] rounded-xl flex items-center justify-center gap-2 active:bg-slate-50"
-          onClick={() => navigate(`/input?skill=${skill}`)}
+          onClick={() => navigate(`/chat?skill=${skill}`)}
         >
           <BellPlus className="w-5 h-5 text-amber-500" />
           <span>创建跟踪任务</span>
         </button>
         <button 
-          className="flex-1 bg-blue-600 text-white font-medium px-4 py-3 min-h-[48px] rounded-xl flex items-center justify-center gap-2 active:bg-blue-700"
-          onClick={() => navigate(`/input?skill=${skill}&context=${encodeURIComponent(query)}`)}
+          className="flex-1 bg-slate-900 text-white font-medium px-4 py-3 min-h-[48px] rounded-xl flex items-center justify-center gap-2 active:bg-slate-800 transition-colors"
+          onClick={() => navigate(`/chat?skill=${skill}&context=${encodeURIComponent(query)}`)}
         >
           <MessageCircle className="w-5 h-5" />
           <span>继续追问</span>

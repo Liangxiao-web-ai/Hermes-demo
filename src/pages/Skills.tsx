@@ -56,18 +56,18 @@ export default function Skills() {
           <h3 className="text-sm font-medium text-slate-500 mb-3 ml-1">我的自建 Skill</h3>
           <div className="flex gap-3 overflow-x-auto pb-4 snap-x -mx-4 px-4 scrollbar-hide">
             <div 
-              className="min-w-[140px] w-[140px] snap-start bg-blue-50 border-2 border-dashed border-blue-200 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer active:bg-blue-100 transition-colors"
+              className="min-w-[140px] w-[140px] snap-start bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer active:bg-slate-100 transition-colors"
               onClick={() => navigate('/create-skill')}
             >
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+              <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
                 <Plus className="w-5 h-5" />
               </div>
-              <span className="text-sm font-medium text-blue-700">创建新引擎</span>
+              <span className="text-sm font-medium text-slate-700">创建新引擎</span>
             </div>
             
             <div 
               className="min-w-[200px] snap-start bg-white border border-slate-100 shadow-sm rounded-2xl p-4 flex flex-col justify-between cursor-pointer active:bg-slate-50 transition-colors"
-              onClick={() => navigate(`/input?skill=custom_dividend`)}
+              onClick={() => navigate(`/chat?skill=custom_dividend`)}
             >
               <div className="flex items-start gap-3 mb-2">
                 <div className="p-2 bg-amber-50 rounded-xl">
@@ -89,7 +89,7 @@ export default function Skills() {
               {cat.items.map(skill => (
                 <div 
                   key={skill.id}
-                  onClick={() => navigate(`/input?skill=${skill.id}`)}
+                  onClick={() => navigate(`/chat?skill=${skill.id}`)}
                   className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 active:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <div className="p-3 bg-slate-50 rounded-xl mt-0.5">
@@ -99,7 +99,7 @@ export default function Skills() {
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium text-slate-800">{skill.title}</span>
                       {skill.id === "fundamental" && (
-                        <span className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-medium">推荐</span>
+                        <span className="text-[10px] bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded font-medium">推荐</span>
                       )}
                     </div>
                     <p className="text-sm text-slate-500 line-clamp-2">{skill.desc}</p>
